@@ -3,6 +3,7 @@ var router = express.Router();
 var db = require("mongoskin").db("mongodb://localhost:27017/dota_new_year");
 
 var coll = db.collection('the_data');
+var app = require('../app');
 
 //获得数据
 router.get('/', function(req, res, next) {
@@ -17,19 +18,19 @@ router.get('/', function(req, res, next) {
                 dates : [ {
                     name : "腊月二十八"
                 }, {
-                    name : "腊月二十九"
+                    name : "除夕"
                 } ],
                 persons : [ {
                     name : "蝈蝈",
                     oks : {
                         "腊月二十八" : true,
-                        "腊月二十九" : false
+                        "除夕" : false
                     }
                 }, {
                     name : "阿杜",
                     oks : {
                         "腊月二十八" : false,
-                        "腊月二十九" : false
+                        "除夕" : false
                     }
                 } ]
             };
@@ -52,12 +53,16 @@ router.post("/setData", function(req, res, next) {
             persons : json.persons
         }
     }, function(err, result) {
-        if (err)
+        if (err){
             throw err;
-        else
+        }
+        else{
             res.json({
                 "msg" : "更新成功！"
             });
+            //把修改信息广播出去
+            global.the_io.sockets.emit("change", json);
+        }
     })
 });
 

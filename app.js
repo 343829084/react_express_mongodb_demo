@@ -10,6 +10,8 @@ var users = require('./routes/users');
 var api = require('./routes/api');
 
 var app = express();
+var server = require('http').Server(app);
+var io = require('socket.io')(server);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -59,7 +61,10 @@ app.use(function(err, req, res, next) {
   });
 });
 
-//启动监听
-var server = app.listen(3000, function() {
-  console.log("...started...");
+server.listen(3000);
+
+io.on('connection', function(socket){
+    
 });
+
+global.the_io = io;
