@@ -19,6 +19,12 @@
     <script src="http://cdn.bootcss.com/jquery/3.0.0-alpha1/jquery.min.js"></script>
   </head>
   <body>
+  	姓名：<input type="text" id="name"/>
+  	<input type="button" id="name_btn" value="添加玩家"/>
+  	<br>
+  	日期：<input type="text" id="date"/>
+  	<input type="button" id="date_btn" value="添加日期"/>
+  	
     <div id="example"></div>
     <script>
       //业务数据。dates表示日期，persons表示人
@@ -101,6 +107,34 @@
 	      );
 	  });
 
+	  $(function(){
+	  	$("#name_btn").click(function(){
+	  		var name = $("#name").val();
+	  		if(name){
+		  		myTable.state.persons.push({
+		  			name : name,
+		  			oks : {}
+		  		});
+		  		myTable.setState(myTable.state);
+		  		setDataToDb();
+	  		}else{
+	  			alert("请输入姓名！");
+	  		}
+	  	});
+	  	
+	  	$("#date_btn").click(function(){
+	  		var date = $("#date").val();
+	  		if(date){
+		  		myTable.state.dates.push({
+		  			name : date
+		  		});
+		  		myTable.setState(myTable.state);
+		  		setDataToDb();
+	  		}else{
+	  			alert("请输入日期！");
+	  		}
+	  	});
+	  });
     </script>
   </body>
 </html>
